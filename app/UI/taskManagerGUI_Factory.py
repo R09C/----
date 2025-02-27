@@ -5,24 +5,23 @@ from entity.base.concreteTaskFactory import ConcreteTaskFactory
 
 class TaskManagerGUI_Factory:
     def __init__(self, root):
-        """Инициализирует GUI Менеджера задач с Фабричным Методом."""
         self.root = root
         root.title("Менеджер задач (Фабричный Метод)")
 
-        self.task_factory = ConcreteTaskFactory()  # Создаем фабрику задач
-        self.tasks = []  # Список объектов задач
+        self.task_factory = ConcreteTaskFactory()  
+        self.tasks = []  
         self.task_var = tk.StringVar(
             value=[str(task) for task in self.tasks]
-        )  # Для отображения в Listbox
+        )  
         self.task_listbox = tk.Listbox(
             root, listvariable=self.task_var, height=10, width=50
         )
         self.task_listbox.pack(pady=10, padx=10)
         self.task_listbox.bind(
             "<Double-Button-1>", self.show_task_details
-        )  # Двойной клик для деталей
+        )  
 
-        # Кнопки управления
+       
         self.add_button = ttk.Button(
             root, text="Добавить задачу", command=self.open_add_task_window
         )
@@ -39,11 +38,9 @@ class TaskManagerGUI_Factory:
         self.complete_button.pack(side=tk.LEFT, padx=5, pady=5)
 
     def update_task_list(self):
-        """Обновляет список задач в Listbox."""
         self.task_var.set([str(task) for task in self.tasks])
 
     def open_add_task_window(self):
-        """Открывает окно для добавления новой задачи."""
         self.add_window = tk.Toplevel(self.root)
         self.add_window.title("Добавить новую задачу")
 
@@ -63,22 +60,19 @@ class TaskManagerGUI_Factory:
 
         self.specific_fields_frame = ttk.Frame(
             self.add_window
-        )  # Фрейм для динамических полей
+        )  
         self.specific_fields_frame.grid(row=2, column=0, columnspan=2, padx=5, pady=5)
 
         self.task_type_combobox.bind(
             "<<ComboboxSelected>>", self.show_specific_fields
-        )  # Обработчик смены типа
-
-        self.show_specific_fields()  # Показать поля для типа по умолчанию
+        )  
+        self.show_specific_fields()  
 
         ttk.Button(self.add_window, text="Добавить задачу", command=self.add_task).grid(
             row=3, column=0, columnspan=2, pady=10
         )
 
     def show_specific_fields(self, event=None):
-        """Показывает специфические поля ввода в зависимости от выбранного типа задачи."""
-        # Очищаем предыдущие специфические поля
         for widget in self.specific_fields_frame.winfo_children():
             widget.destroy()
 
@@ -97,7 +91,6 @@ class TaskManagerGUI_Factory:
             self.shopping_entry.pack(side=tk.LEFT)
 
     def add_task(self):
-        """Добавляет новую задачу в список задач, используя Фабричный Метод."""
         task_type = self.task_type_combobox.get()
         description = self.description_entry.get()
         specific_data = {"description": description}  # Общие данные
@@ -123,7 +116,6 @@ class TaskManagerGUI_Factory:
             messagebox.showerror("Ошибка ввода", str(e))
 
     def delete_task(self):
-        """Удаляет выбранную задачу из списка."""
         selected_index = self.task_listbox.curselection()
         if selected_index:
             index = selected_index[0]
@@ -131,7 +123,6 @@ class TaskManagerGUI_Factory:
             self.update_task_list()
 
     def mark_task_completed(self):
-        """Отмечает выбранную задачу как выполненную."""
         selected_index = self.task_listbox.curselection()
         if selected_index:
             index = selected_index[0]
@@ -139,7 +130,6 @@ class TaskManagerGUI_Factory:
             self.update_task_list()
 
     def show_task_details(self, event):
-        """Показывает детали выбранной задачи во всплывающем окне."""
         selected_index = self.task_listbox.curselection()
         if selected_index:
             index = selected_index[0]

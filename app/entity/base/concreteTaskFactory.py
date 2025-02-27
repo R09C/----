@@ -6,7 +6,6 @@ from ..subentity.shoppingTask import ShoppingTask
 
 class ConcreteTaskFactory(TaskFactory):
     def create_task(self, task_type, **kwargs):
-        """Создает задачу конкретного типа на основе типа задачи и дополнительных аргументов."""
         description = kwargs.get("description", "")
         if task_type == "Обычная":
             return Task(description)
