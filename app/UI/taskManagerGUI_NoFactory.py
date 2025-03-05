@@ -5,9 +5,10 @@ from entity.task import Task
 from entity.subentity.deadLineTask import DeadlineTask
 from entity.subentity.shoppingTask import ShoppingTask
 
+
 class TaskManagerGUI_NoFactory:
     def __init__(self, root):
-        """Инициализирует GUI Менеджера задач БЕЗ Фабричного Метода."""
+
         self.root = root
         root.title("Менеджер задач (Без Фабричного Метода)")
 
@@ -35,11 +36,11 @@ class TaskManagerGUI_NoFactory:
         self.complete_button.pack(side=tk.LEFT, padx=5, pady=5)
 
     def update_task_list(self):
-        """Обновляет список задач в Listbox."""
+
         self.task_var.set([str(task) for task in self.tasks])
 
     def open_add_task_window(self):
-        """Открывает окно для добавления новой задачи."""
+
         self.add_window = tk.Toplevel(self.root)
         self.add_window.title("Добавить новую задачу")
 
@@ -68,7 +69,7 @@ class TaskManagerGUI_NoFactory:
         )
 
     def show_specific_fields(self, event=None):
-        """Показывает специфические поля ввода в зависимости от выбранного типа задачи."""
+
         for widget in self.specific_fields_frame.winfo_children():
             widget.destroy()
 
@@ -86,26 +87,22 @@ class TaskManagerGUI_NoFactory:
             self.shopping_entry = ttk.Entry(self.specific_fields_frame, width=30)
             self.shopping_entry.pack(side=tk.LEFT)
 
-    def add_task(self):  # Версия БЕЗ фабрики - с if/elif/else
-        """Добавляет новую задачу в список задач БЕЗ использования Фабричного Метода (прямое создание объектов)."""
+    def add_task(self):
+
         task_type = self.task_type_combobox.get()
         description = self.description_entry.get()
 
         try:
             if task_type == "Обычная":
-                task = Task(description)  # Прямое создание объекта
+                task = Task(description)
             elif task_type == "С дедлайном":
                 deadline_str = self.deadline_entry.get()
                 datetime.strptime(deadline_str, "%Y-%m-%d")
-                task = DeadlineTask(
-                    description, deadline_str
-                )  # Прямое создание объекта
+                task = DeadlineTask(description, deadline_str)
             elif task_type == "Покупка":
                 shopping_list_str = self.shopping_entry.get()
                 shopping_list = [item.strip() for item in shopping_list_str.split(",")]
-                task = ShoppingTask(
-                    description, shopping_list
-                )  # Прямое создание объекта
+                task = ShoppingTask(description, shopping_list)
             else:
                 raise ValueError(f"Неизвестный тип задачи: {task_type}")
 
@@ -116,7 +113,7 @@ class TaskManagerGUI_NoFactory:
             messagebox.showerror("Ошибка ввода", str(e))
 
     def delete_task(self):
-        """Удаляет выбранную задачу из списка."""
+
         selected_index = self.task_listbox.curselection()
         if selected_index:
             index = selected_index[0]
@@ -124,7 +121,7 @@ class TaskManagerGUI_NoFactory:
             self.update_task_list()
 
     def mark_task_completed(self):
-        """Отмечает выбранную задачу как выполненную."""
+
         selected_index = self.task_listbox.curselection()
         if selected_index:
             index = selected_index[0]
@@ -132,7 +129,7 @@ class TaskManagerGUI_NoFactory:
             self.update_task_list()
 
     def show_task_details(self, event):
-        """Показывает детали выбранной задачи во всплывающем окне."""
+
         selected_index = self.task_listbox.curselection()
         if selected_index:
             index = selected_index[0]

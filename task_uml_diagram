@@ -1,0 +1,46 @@
+// Task UML Diagram
+digraph {
+	T [label="Task
+- description: String
+- status: String
++ get_description(): String
++ get_status(): String
++ mark_completed(): void
++ display_details(): String
++ get_task_type(): String
++ get_specific_data(): Map
++ set_specific_data(data: Map): void"]
+	D [label="DeadlineTask
+- deadline: String
++ get_deadline(): String
++ display_details(): String
++ get_task_type(): String
++ get_specific_data(): Map
++ set_specific_data(data: Map): void"]
+	S [label="ShoppingTask
+- shopping_list: List<String>
++ get_shopping_list(): List<String>
++ display_details(): String
++ get_task_type(): String
++ get_specific_data(): Map
++ set_specific_data(data: Map): void"]
+	TF [label="TaskFactory
++ create_task(task_type: String, **kwargs): Task"]
+	CTF [label="ConcreteTaskFactory
++ create_task(task_type: String, **kwargs): Task"]
+	TGF [label="TaskManagerGUI_Factory
++ update_task_list(): void
++ open_add_task_window(): void
++ show_specific_fields(): void
++ add_task(): void
++ delete_task(): void
++ mark_task_completed(): void
++ show_task_details(): void"]
+	T -> D [label=inherits]
+	T -> S [label=inherits]
+	TF -> CTF [label=inherits]
+	TGF -> CTF [label=uses]
+	CTF -> S [label=creates]
+	CTF -> D [label=creates]
+	CTF -> T [label=creates]
+}

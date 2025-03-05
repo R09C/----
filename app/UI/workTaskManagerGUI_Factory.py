@@ -5,14 +5,15 @@ from entity.base.concreteTaskFactory import ConcreteTaskFactory
 from entity.base.concreteTaskFactory import WorkTaskFactory
 
 
-class TaskManagerGUI_Factory:
-    def __init__(self, root):
-        
-        self.root = root
-        root.title("Менеджер Основных Задач (Фабричный Метод)")  
+class WorkTaskManagerGUI_Factory:
 
-        self.task_factory_regular = ConcreteTaskFactory()  
-        self.tasks = []  
+    def __init__(self, root):
+
+        self.root = root
+        root.title("Менеджер Основных Задач (Фабричный Метод)")
+
+        self.task_factory_regular = WorkTaskFactory()
+        self.tasks = []
         self.task_var = tk.StringVar(value=[str(task) for task in self.tasks])
         self.task_listbox = tk.Listbox(
             root, listvariable=self.task_var, height=10, width=50
@@ -20,10 +21,9 @@ class TaskManagerGUI_Factory:
         self.task_listbox.pack(pady=10, padx=10)
         self.task_listbox.bind("<Double-Button-1>", self.show_task_details)
 
-        
         self.add_button = ttk.Button(
-            root, text="Добавить Основную Задачу", command=self.open_add_task_window
-        )  
+            root, text="Добавить рабочую задачу", command=self.open_add_task_window
+        )
         self.add_button.pack(side=tk.LEFT, padx=5, pady=5)
 
         self.delete_button = ttk.Button(
@@ -37,18 +37,18 @@ class TaskManagerGUI_Factory:
         self.complete_button.pack(side=tk.LEFT, padx=5, pady=5)
 
     def update_task_list(self):
-        
+
         self.task_var.set([str(task) for task in self.tasks])
 
     def open_add_task_window(self):
-        
+
         self.add_window = tk.Toplevel(self.root)
-        self.add_window.title("Добавить Основную Задачу")  
+        self.add_window.title("Добавить Основную Задачу")
 
         ttk.Label(self.add_window, text="Тип задачи:").grid(
             row=0, column=0, padx=5, pady=5, sticky="e"
         )
-        task_types = ["Обычная", "С дедлайном", "Покупка"]  
+        task_types = ["Обычная", "С дедлайном", "Покупка"]
         self.task_type_combobox = ttk.Combobox(self.add_window, values=task_types)
         self.task_type_combobox.set(task_types[0])
         self.task_type_combobox.grid(row=0, column=1, padx=5, pady=5)
@@ -70,7 +70,7 @@ class TaskManagerGUI_Factory:
         )
 
     def show_specific_fields(self, event=None):
-        
+
         for widget in self.specific_fields_frame.winfo_children():
             widget.destroy()
 
@@ -89,7 +89,7 @@ class TaskManagerGUI_Factory:
             self.shopping_entry.pack(side=tk.LEFT)
 
     def add_task(self):
-        
+
         task_type = self.task_type_combobox.get()
         description = self.description_entry.get()
         specific_data = {"description": description}
@@ -104,7 +104,7 @@ class TaskManagerGUI_Factory:
                 specific_data["shopping_list"] = [
                     item.strip() for item in shopping_list_str.split(",")
                 ]
-            
+
             task = self.task_factory_regular.create_task(task_type, **specific_data)
 
             self.tasks.append(task)
@@ -114,7 +114,7 @@ class TaskManagerGUI_Factory:
             messagebox.showerror("Ошибка ввода", str(e))
 
     def delete_task(self):
-        
+
         selected_index = self.task_listbox.curselection()
         if selected_index:
             index = selected_index[0]
@@ -122,7 +122,7 @@ class TaskManagerGUI_Factory:
             self.update_task_list()
 
     def mark_task_completed(self):
-        
+
         selected_index = self.task_listbox.curselection()
         if selected_index:
             index = selected_index[0]
@@ -130,7 +130,7 @@ class TaskManagerGUI_Factory:
             self.update_task_list()
 
     def show_task_details(self, event):
-        
+
         selected_index = self.task_listbox.curselection()
         if selected_index:
             index = selected_index[0]
